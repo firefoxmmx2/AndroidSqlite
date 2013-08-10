@@ -17,7 +17,8 @@ public class SqlUtil extends SQLiteOpenHelper {
 	private static final String CREATE_SQL_TABLE_USER = "create table t_user("
 			+ " id integer not null primary key autoincrement,"
 			+ "username varchar(20) not null,"
-			+ "password varchar(20) not null," + "name varchar(20) not null)";
+			+ "password varchar(20) not null," + "name varchar(20) not null,"
+			+ "email varchar(50)," + "birth date)";
 	private static final String UPGRADE_SQL = "";
 
 	public SqlUtil(Context context, String name, CursorFactory factory,
@@ -27,6 +28,10 @@ public class SqlUtil extends SQLiteOpenHelper {
 
 	public SqlUtil(Context context, CursorFactory factory) {
 		super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+	}
+
+	public SqlUtil(Context context) {
+		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
 	@Override

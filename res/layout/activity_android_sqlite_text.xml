@@ -3,7 +3,6 @@
     android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal|fill|fill_horizontal"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -12,10 +11,11 @@
     tools:context=".AndroidSqliteText" >
 
     <EditText
-        android:id="@+id/usernameEdit"
+        android:id="@+id/regUsernameEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" >
+        android:ems="10"
+        android:hint="@string/usernameHint" >
 
         <requestFocus />
     </EditText>
@@ -24,12 +24,15 @@
         android:id="@+id/passwordEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" />
+        android:ems="10"
+        android:hint="@string/passwordHint"
+        android:inputType="textPassword" />
 
     <TableLayout
         android:id="@+id/TableLayout1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:stretchColumns="0,1" >
 
         <TableRow
             android:id="@+id/tableRow1"
@@ -48,7 +51,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/registerBtn" />
-
         </TableRow>
 
     </TableLayout>
