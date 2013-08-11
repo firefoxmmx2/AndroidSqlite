@@ -55,6 +55,7 @@
                 android:id="@+id/regBirthEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:editable="false"
                 android:ems="10"
                 android:hint="@string/regBirth"
                 android:inputType="date" />
