@@ -14,5 +14,6 @@
     <string name="regEmailHint">邮箱</string>
     <string name="regBirth">生日</string>
     <string name="regDateSelectBtn">选择</string>
+    <string name="regNameEditHint">名称</string>
 
 </resources>

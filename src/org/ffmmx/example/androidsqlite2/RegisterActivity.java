@@ -56,6 +56,8 @@ public class RegisterActivity extends Activity {
 				ContentValues values = new ContentValues();
 				values.put("username", usernameEdit.getText().toString());
 				values.put("password", passwordEdit.getText().toString());
+				values.put("passwordRepeat", passwordRepeatEdit.getText()
+						.toString());
 				values.put("email", emailEdit.getText().toString());
 				values.put("birth", birthEdit.getText().toString());
 				if (!validate(values)) {
@@ -63,10 +65,11 @@ public class RegisterActivity extends Activity {
 				}
 				SQLiteDatabase db = util.getWritableDatabase();
 				db.beginTransaction();
-
+				values.remove("passwordRepeat");
 				db.insert("t_user", null, values);
 				db.endTransaction();
 				db.close();
+				finish();
 				break;
 			case R.id.regDateSelectBtn:
 				Calendar now = Calendar.getInstance();
@@ -92,7 +95,6 @@ public class RegisterActivity extends Activity {
 				break;
 			}
 		}
-
 	}
 
 	private boolean validate(ContentValues values) {
@@ -116,6 +118,14 @@ public class RegisterActivity extends Activity {
 			passwordRepeatEdit.forceLayout();
 			Toast.makeText(RegisterActivity.this, "密码重复不能为空", Toast.LENGTH_LONG)
 					.show();
+			return false;
+		}
+		if (!values.getAsString("password").equals(
+				values.getAsString("passwordRepeat"))) {
+			passwordRepeatEdit.findFocus();
+			Toast.makeText(RegisterActivity.this, "两次输入不一致", Toast.LENGTH_LONG)
+					.show();
+			;
 			return false;
 		}
 		if (values.getAsString("email") == null
