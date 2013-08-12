@@ -14,7 +14,7 @@ public class Login {
 			String password) throws ParseException {
 		Cursor cur = db.query("t_user", new String[] { "id", "username",
 				"password", "email", "name", "birth" },
-				"username=? and passord=?",
+				"username=? and password=?",
 				new String[] { username, password }, null, null, null);
 		boolean result = false;
 		if (cur.moveToFirst()) {
