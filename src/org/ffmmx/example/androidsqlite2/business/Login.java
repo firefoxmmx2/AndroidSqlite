@@ -33,4 +33,12 @@ public class Login {
 
 		return result;
 	}
+
+	public static boolean isLogon() {
+		if (CommonUtil.currentUser == null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 }
