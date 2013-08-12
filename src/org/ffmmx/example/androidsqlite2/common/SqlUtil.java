@@ -1,4 +1,4 @@
-package org.ffmmx.example.androidsqlite2;
+package org.ffmmx.example.androidsqlite2.common;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

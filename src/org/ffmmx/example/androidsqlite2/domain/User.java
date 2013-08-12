@@ -11,8 +11,16 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 1401128005390793313L;
 
 	private Integer id;
-	private String username, name, password, email;
+	private String username, name, password, email, passwordRepeat;
 	private Date birth;
+
+	public String getPasswordRepeat() {
+		return passwordRepeat;
+	}
+
+	public void setPasswordRepeat(String passwordRepeat) {
+		this.passwordRepeat = passwordRepeat;
+	}
 
 	public Integer getId() {
 		return id;

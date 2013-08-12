@@ -1,4 +1,4 @@
-package org.ffmmx.example.androidsqlite2;
+package org.ffmmx.example.androidsqlite2.activity;
 
 import android.app.Activity;
 import android.os.Bundle;

@@ -1,13 +1,17 @@
-package org.ffmmx.example.androidsqlite2;
+package org.ffmmx.example.androidsqlite2.activity;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.ffmmx.example.androidsqlite2.R;
+import org.ffmmx.example.androidsqlite2.common.SqlUtil;
+import org.ffmmx.example.androidsqlite2.domain.User;
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
@@ -52,22 +56,24 @@ public class RegisterActivity extends Activity {
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.regRegisterBtn:
+				User user = new User();
+				user.setUsername(usernameEdit.getText().toString());
+				user.setPassword(passwordEdit.getText().toString());
+				user.setPasswordRepeat(passwordRepeatEdit.getText().toString());
+				user.setEmail(emailEdit.getText().toString());
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				try {
+					user.setBirth(sdf.parse(birthEdit.getText().toString()));
+				} catch (ParseException e) {
+					e.printStackTrace();
+					System.exit(-1);
+				}
 
-				ContentValues values = new ContentValues();
-				values.put("username", usernameEdit.getText().toString());
-				values.put("password", passwordEdit.getText().toString());
-				values.put("passwordRepeat", passwordRepeatEdit.getText()
-						.toString());
-				values.put("email", emailEdit.getText().toString());
-				values.put("birth", birthEdit.getText().toString());
-				if (!validate(values)) {
+				if (!validate(user)) {
 					break;
 				}
 				SQLiteDatabase db = util.getWritableDatabase();
-				db.beginTransaction();
-				values.remove("passwordRepeat");
-				db.insert("t_user", null, values);
-				db.endTransaction();
+
 				db.close();
 				finish();
 				break;
@@ -97,46 +103,41 @@ public class RegisterActivity extends Activity {
 		}
 	}
 
-	private boolean validate(ContentValues values) {
-		if (values.getAsString("username") == null
-				|| "".equals(values.getAsString("username"))) {
+	private boolean validate(User user) {
+		if (user.getUsername() == null || "".equals(user.getUsername())) {
 			usernameEdit.forceLayout();
 			Toast.makeText(RegisterActivity.this, "用户名不能为空", Toast.LENGTH_LONG)
 					.show();
 			;
 			return false;
 		}
-		if (values.getAsString("password") == null
-				|| "".equals(values.getAsString("password"))) {
+		if (user.getPassword() == null || "".equals(user.getPassword())) {
 			passwordEdit.forceLayout();
 			Toast.makeText(RegisterActivity.this, "密码不能为空", Toast.LENGTH_LONG)
 					.show();
 			return false;
 		}
-		if (values.getAsString("passwordRepeat") == null
-				|| "".equals(values.getAsString("passwordRepeat"))) {
+		if (user.getPasswordRepeat() == null
+				|| "".equals(user.getPasswordRepeat())) {
 			passwordRepeatEdit.forceLayout();
 			Toast.makeText(RegisterActivity.this, "密码重复不能为空", Toast.LENGTH_LONG)
 					.show();
 			return false;
 		}
-		if (!values.getAsString("password").equals(
-				values.getAsString("passwordRepeat"))) {
+		if (!user.getPassword().equals(user.getPasswordRepeat())) {
 			passwordRepeatEdit.findFocus();
 			Toast.makeText(RegisterActivity.this, "两次输入不一致", Toast.LENGTH_LONG)
 					.show();
 			;
 			return false;
 		}
-		if (values.getAsString("email") == null
-				|| "".equals(values.getAsString("email"))) {
+		if (user.getEmail() == null || "".equals(user.getEmail())) {
 			emailEdit.forceLayout();
 			Toast.makeText(RegisterActivity.this, "邮箱不能为空", Toast.LENGTH_LONG)
 					.show();
 			return false;
 		}
-		if (values.getAsString("birth") == null
-				|| "".equals(values.getAsString("birth"))) {
+		if (user.getBirth() == null) {
 			birthEdit.forceLayout();
 			Toast.makeText(RegisterActivity.this, "生日不能为空", Toast.LENGTH_LONG)
 					.show();

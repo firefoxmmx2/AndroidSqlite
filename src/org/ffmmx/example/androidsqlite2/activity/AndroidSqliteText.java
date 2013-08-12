@@ -1,9 +1,16 @@
-package org.ffmmx.example.androidsqlite2;
+package org.ffmmx.example.androidsqlite2.activity;
+
+import java.text.ParseException;
+
+import org.ffmmx.example.androidsqlite2.R;
+import org.ffmmx.example.androidsqlite2.R.id;
+import org.ffmmx.example.androidsqlite2.R.layout;
+import org.ffmmx.example.androidsqlite2.R.menu;
+import org.ffmmx.example.androidsqlite2.business.Login;
+import org.ffmmx.example.androidsqlite2.common.SqlUtil;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
@@ -35,26 +42,20 @@ public class AndroidSqliteText extends Activity {
 
 	}
 
-	public void login(String username, String password) {
-		SQLiteDatabase db = sqlhelper.getReadableDatabase();
-		Cursor cur = db.query("t_user", new String[] { "id", "username",
-				"password", "email", "name", "birth" },
-				"username=? and passord=?",
-				new String[] { username, password }, null, null, null);
-		if(cur.moveToFirst()) {
-			SharedPreferences sharedPreferences=this.getSharedPreferences("config", 0);
-			SharedPreferences.Editor settingEditor=sharedPreferences.edit();
-			settingEditor.
-		}
-		cur.close();
-	}
-
 	class ClickLisenter implements OnClickListener {
 
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.loginBtn:
+				SQLiteDatabase db = sqlhelper.getReadableDatabase();
+				try {
+					Login.login(db, usernameEdit.getText().toString(),
+							passwordEdit.getText().toString());
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				db.close();
 				break;
 			case R.id.registerBtn:
 				Intent intent = new Intent();
