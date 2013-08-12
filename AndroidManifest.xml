@@ -22,8 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.RegisterActivity"></activity>
-        <activity android:name=".activity.NoteActivity"></activity>
+        <activity android:name="org.ffmmx.example.androidsqlite2.activity.RegisterActivity" >
+        </activity>
+        <activity android:name="org.ffmmx.example.androidsqlite2.activity.NoteActivity" >
+        </activity>
+        <activity
+            android:name="org.ffmmx.example.androidsqlite2.activity.LoginActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
     </application>
 
 </manifest>

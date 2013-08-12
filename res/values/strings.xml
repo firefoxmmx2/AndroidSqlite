@@ -15,5 +15,6 @@
     <string name="regBirth">生日</string>
     <string name="regDateSelectBtn">选择</string>
     <string name="regNameEditHint">名称</string>
+    <string name="title_activity_login">LoginActivity</string>
 
 </resources>
