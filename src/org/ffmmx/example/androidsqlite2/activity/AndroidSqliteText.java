@@ -26,7 +26,7 @@ public class AndroidSqliteText extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_android_sqlite_text);
+		setContentView(R.layout.activity_login);
 
 		if (Login.isLogon()) {
 			Intent intent = new Intent();
