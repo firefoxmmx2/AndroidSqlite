@@ -16,5 +16,9 @@
     <string name="regDateSelectBtn">选择</string>
     <string name="regNameEditHint">名称</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="subject">主题</string>
+    <string name="content">内容</string>
+    <string name="note_time">时间</string>
+    <string name="add_note_btn">添加日程</string>
 
 </resources>
