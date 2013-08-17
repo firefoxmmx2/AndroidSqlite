@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.ffmmx.example.androidsqlite2.R;
+import org.ffmmx.example.androidsqlite2.business.Register;
 import org.ffmmx.example.androidsqlite2.common.SqlUtil;
 import org.ffmmx.example.androidsqlite2.domain.User;
 
@@ -24,7 +25,7 @@ import android.widget.Toast;
 
 public class RegisterActivity extends Activity {
 	private EditText usernameEdit, passwordEdit, passwordRepeatEdit, emailEdit,
-			birthEdit;
+			birthEdit, nameEdit;
 	private Button registerBtn, birthSelectBtn;
 
 	private SQLiteOpenHelper util;
@@ -41,6 +42,7 @@ public class RegisterActivity extends Activity {
 				.findViewById(R.id.regPasswordRepeatEdit);
 		emailEdit = (EditText) this.findViewById(R.id.regEmailEdit);
 		birthEdit = (EditText) this.findViewById(R.id.regBirthEdit);
+		nameEdit = (EditText) this.findViewById(R.id.regNameEdit);
 
 		registerBtn = (Button) this.findViewById(R.id.regRegisterBtn);
 		birthSelectBtn = (Button) this.findViewById(R.id.regDateSelectBtn);
@@ -61,6 +63,8 @@ public class RegisterActivity extends Activity {
 				user.setPassword(passwordEdit.getText().toString());
 				user.setPasswordRepeat(passwordRepeatEdit.getText().toString());
 				user.setEmail(emailEdit.getText().toString());
+				user.setName(nameEdit.getText().toString());
+
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				try {
 					user.setBirth(sdf.parse(birthEdit.getText().toString()));
@@ -73,9 +77,19 @@ public class RegisterActivity extends Activity {
 					break;
 				}
 				SQLiteDatabase db = util.getWritableDatabase();
-
-				db.close();
-				finish();
+				boolean result = false;
+				try {
+					result = Register.register(db, user);
+				} catch (Exception e) {
+					e.printStackTrace();
+					Toast.makeText(RegisterActivity.this, e.getMessage(),
+							Toast.LENGTH_LONG).show();
+				} finally {
+					db.close();
+				}
+				if (result) {
+					finish();
+				}
 				break;
 			case R.id.regDateSelectBtn:
 				Calendar now = Calendar.getInstance();
