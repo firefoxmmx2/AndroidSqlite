@@ -5,13 +5,15 @@ import android.view.View
 import android.app.Activity
 
 object Widgets {
-  trait RichButton extends Button {
-    def onClick(handler: => Any) = {
-      this.setOnClickListener(new View.OnClickListener() {
-        override def onClick(v: View): Unit = {
-          handler
-        }
-      })
+  implicit def button2RichButton(button: Button) = {
+    new {
+      def onClick(handler: => Any) = {
+        button.setOnClickListener(new View.OnClickListener() {
+          override def onClick(v: View): Unit = {
+            handler
+          }
+        })
+      }
     }
   }
 
