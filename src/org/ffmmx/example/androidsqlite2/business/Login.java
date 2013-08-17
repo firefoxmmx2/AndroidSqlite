@@ -28,7 +28,7 @@ public class Login {
 
 			currUser.setBirth(sdf.parse(cur.getString(5)));
 			CommonUtil.currentUser = currUser;
-
+			result = true;
 		}
 
 		return result;
