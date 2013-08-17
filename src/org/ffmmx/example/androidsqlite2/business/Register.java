@@ -26,6 +26,7 @@ public class Register {
 		}
 		db.beginTransaction();
 		long count = db.insert("t_user", null, values);
+		db.setTransactionSuccessful();
 		db.endTransaction();
 		if (count > 0)
 			result = true;
@@ -33,12 +34,10 @@ public class Register {
 	}
 
 	public static boolean isAvailableUser(SQLiteDatabase db, String username) {
-		boolean result = false;
-
 		long count = 0;
 		Cursor cur = db.query("t_user", new String[] { "id" }, "username=?",
 				new String[] { username }, null, null, null);
-		count = cur.getColumnCount();
+		count = cur.getCount();
 		if (count > 0)
 			return false;
 		else
