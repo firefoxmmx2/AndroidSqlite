@@ -4,14 +4,11 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.HashMap
-
 import scala.collection.mutable.Map
-
 import org.ffmmx.example.androidsqlite2.R
 import org.ffmmx.example.androidsqlite2.business.Note
 import org.ffmmx.example.androidsqlite2.common.SqlUtil
 import org.ffmmx.example.androidsqlite2.common.Widgets._
-
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
@@ -21,6 +18,7 @@ import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.SimpleAdapter
+import org.ffmmx.example.androidsqlite2.common.CommonUtil
 
 class NoteActivity extends RichActivity {
   override def onCreate(savedInstanceState: Bundle): Unit = {
@@ -47,10 +45,12 @@ class NoteActivity extends RichActivity {
           noteTimeEdit.setText(sdf.format(selectDateCal.getTime()))
         }
       }, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH))
+      datapickDialog.show()
     })
 
     //初始化列表
     val noteListViewData = new java.util.ArrayList[java.util.Map[String, Object]]()
+    val sdf = new SimpleDateFormat("yyyy-MM-dd")
     val db = sqlUtil.getReadableDatabase()
     try {
       val notelist = Note.all(db)
@@ -59,7 +59,7 @@ class NoteActivity extends RichActivity {
         map.put("itemId", new Integer(note.id))
         map.put("itemSubject", note.subject)
         map.put("itemContent", note.content)
-        map.put("itemNotetime", note.noteDate)
+        map.put("itemNotetime", sdf.format(note.noteDate))
         noteListViewData.add(map)
       })
     } catch {
@@ -73,5 +73,38 @@ class NoteActivity extends RichActivity {
       Array("itemSubject", "itemContent", "itemNotetime"),
       Array(R.id.notelist_itemSubject, R.id.notelist_itemContent,
         R.id.notelist_itemNotetime))
+    noteListView.setAdapter(simpleAdapter)
+
+    addNoteBtn.onClick({
+      val note = org.ffmmx.example.androidsqlite2.domain.Note(subject = subjectEdit.getText().toString(),
+        content = contentEdit.getText().toString(),
+        noteDate = sdf.parse(noteTimeEdit.getText().toString()),
+        userid = CommonUtil.currentUser.getId())
+      val db = sqlUtil.getWritableDatabase()
+      try {
+        Note.add(db, note)
+        noteListViewData.clear()
+        val notelist = Note.all(db)
+        notelist.foreach(note => {
+          val map = new HashMap[String, Object]()
+          map.put("itemId", new Integer(note.id))
+          map.put("itemSubject", note.subject)
+          map.put("itemContent", note.content)
+          map.put("itemNotetime", sdf.format(note.noteDate))
+          noteListViewData.add(map)
+        })
+        val simpleAdapter = new SimpleAdapter(NoteActivity.this, noteListViewData,
+          R.layout.note_list,
+          Array("itemSubject", "itemContent", "itemNotetime"),
+          Array(R.id.notelist_itemSubject, R.id.notelist_itemContent,
+            R.id.notelist_itemNotetime))
+        noteListView.setAdapter(simpleAdapter)
+      } catch {
+        case t => t.printStackTrace()
+      } finally {
+        db.close()
+      }
+
+    })
   }
 }
